@@ -1,0 +1,37 @@
+version: '2.1'
+services:
+  postgres:
+    image: healthcheck/postgres:alpine
+    restart: unless-stopped
+    ports: ["5432:5432"]
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: sa
+    networks:
+      struts2-jpa-docker-jboss-example.com:
+        aliases:
+          - db.struts2-jpa-docker-jboss-example.com
+  jboss:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    build: .
+    restart: unless-stopped
+    ports:
+      - '5005:5005'
+      - '8080:8080'
+      - '9990:9990'
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: sa
+      POSTGRES_HOST: db.struts2-jpa-docker-jboss-example.com
+    networks:
+      struts2-jpa-docker-jboss-example.com:
+        aliases:
+          - struts2.struts2-jpa-docker-jboss-example.com
+          - jboss.struts2-jpa-docker-jboss-example.com
+networks:
+  struts2-jpa-docker-jboss-example.com:
+    driver: bridge
