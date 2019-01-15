@@ -8,6 +8,7 @@ Convention Plugin
 https://struts.apache.org/plugins/convention/
 
 pom.xml
+```xml
 ~~~~
 <dependency>
    <groupId>org.apache.struts</groupId>
@@ -23,12 +24,15 @@ Classes implement com.opensymphony.xwork2.Action or their name ends with Action.
 
 Action classes will be configured to respond to specific URLs, based on the package name that the class is defined in and the class name itself:
  com.github.actions.IndexAction -> /
+
  com.example.actions.products.DisplayAction-> /products
+
  com.example.struts.company.details.ShowCompanyDetailsAction -> /company/details
  
 CDI Plugin
 
 pom.xml
+```xml
 ~~~~
 <dependency>
    <groupId>org.apache.struts</groupId>
@@ -39,6 +43,7 @@ pom.xml
  Inevitable requirement to provide at least an empty beans.xml in WEB-INF
  
  beans.xml
+```xml
 ~~~~
 <?xml version="1.0" encoding="UTF-8"?>
 <beans
@@ -54,6 +59,7 @@ Use @Inject annotation from javax.inject.Inject with your Struts 2 CDI plugin an
 _JBoss datasource configuration_
 
 jboss-eap-6.4\standalone\configuration\standalone.xml
+```xml
 ~~~~
 <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" jta="true" use-java-context="true" use-ccm="false">
      <connection-url>jdbc:postgresql://${env.POSTGRES_HOST:127.0.0.1}:${env.POSTGRES_PORT:5432}/${env.POSTGRES_DB:db}</connection-url>
@@ -72,6 +78,7 @@ jboss-eap-6.4\standalone\configuration\standalone.xml
 Put module.xml and postgresql-9.4-1206-jdbc4.jar in jboss-eap-6.4\modules\org\postgresql\main
 
 module.xml
+```xml
 ~~~~
 <?xml version="1.0" encoding="UTF-8"?>
 <module xmlns="urn:jboss:module:1.1" name="org.postgresql">
@@ -86,6 +93,7 @@ module.xml
 </module>
 ~~~~
 src\main\resources\META-INF\persistence.xml
+```xml
 ~~~~
 <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
 ~~~~
@@ -93,6 +101,8 @@ src\main\resources\META-INF\persistence.xml
 JBoss in docker configuration
 
 Dockerfile
+
+```Dockerfile
 ~~~~
 FROM daggerok/jboss-eap-6.4:6.4.21-alpine
 RUN echo "JAVA_OPTS=\"\$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005\"" >> ${JBOSS_HOME}/bin/standalone.conf
@@ -105,6 +115,7 @@ ADD --chown=jboss ./jboss-eap-6.4/standalone/configuration/standalone.xml ${JBOS
 ADD --chown=jboss ./target/*.war ${JBOSS_HOME}/standalone/deployments/struts2-jpa-docker-jboss-example.war
 ~~~~
 docker-compose.yaml
+```yaml
 ~~~~
 version: '2.1'
 services:
@@ -141,12 +152,13 @@ services:
           - struts2.struts2-jpa-docker-jboss-example.com
           - jboss.struts2-jpa-docker-jboss-example.com
 networks:
-  struts2-jpa-docker-jboss-example.com:
-    driver: bridge
+  struts2-jpa-docker-jboss-example.com:driver: bridge
+```xml
 ~~~~
 _JPA configuration_
 
 persistence.xml
+```xml
 ~~~~
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0"
@@ -164,7 +176,8 @@ persistence.xml
 ~~~~
 
 build and run using docker-compose-maven-plugin (see pom.xml)
-
+```bash
+~~~~
 ./mvnw ; ./mvnw -Pdocker docker-compose:up
 
 open http://127.0.0.1:8080/struts2-jpa-docker-jboss-example/
