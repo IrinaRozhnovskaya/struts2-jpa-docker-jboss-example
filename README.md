@@ -22,6 +22,7 @@ Convention plugin finds packages named struts, struts2, action or actions.
 Classes implement com.opensymphony.xwork2.Action or their name ends with Action. 
 
 Action classes will be configured to respond to specific URLs, based on the package name that the class is defined in and the class name itself:
+
  com.github.actions.IndexAction -> /
 
  com.example.actions.products.DisplayAction-> /products
@@ -38,7 +39,7 @@ pom.xml
    <version>${struts.version}</version>
 </dependency>
 ```
- Inevitable requirement to provide at least an empty beans.xml in WEB-INF
+ Inevitable requirement is to provide at least an empty beans.xml in WEB-INF
  
  beans.xml
 ```xml
